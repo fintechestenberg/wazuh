@@ -292,7 +292,6 @@ add_subdirectory(${ENGINE_SOURCE_DIR}/proto)
 add_subdirectory(${ENGINE_SOURCE_DIR}/streamlog)
 add_subdirectory(${ENGINE_SOURCE_DIR}/scheduler)
 add_subdirectory(${ENGINE_SOURCE_DIR}/geo)
-add_subdirectory(${ENGINE_SOURCE_DIR}/queue)
 add_subdirectory(${ENGINE_SOURCE_DIR}/fastqueue)
 add_subdirectory(${ENGINE_SOURCE_DIR}/httpsrv)
 add_subdirectory(${ENGINE_SOURCE_DIR}/udgramsrv)
@@ -327,7 +326,7 @@ target_link_libraries(wazuh-engine
     httpsrv
     udgramsrv::udgramsrv
     api::event
-    queue
+    fastqueue::fastqueue
     archiver::archive
     cmstore::cmstore
     cmcrud::cmcrud
