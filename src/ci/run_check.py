@@ -223,10 +223,10 @@ def runCoverage(moduleName):
     coverageCommand = "lcov {} --capture --output-file {}/code_coverage.info \
                        --rc branch_coverage=0 --exclude=\"*/tests/*\" \
                        --include \"{}/*\" -q \
-                       --ignore-errors version,unused,deprecated".format(
-                                                     folders,
-                                                     reportFolder,
-                                                     includeDir)
+                       --ignore-errors version,unused,deprecated,empty".format(
+                                                      folders,
+                                                      reportFolder,
+                                                      includeDir)
     out = subprocess.run(coverageCommand,
                          stdout=subprocess.PIPE,
                          shell=True,
@@ -240,7 +240,7 @@ def runCoverage(moduleName):
         raise ValueError(errorString)
     genhtmlCommand = "genhtml {0}/code_coverage.info --branch-coverage \
                       --output-directory {0} \
-                      --ignore-errors unused,deprecated".format(reportFolder)
+                      --ignore-errors unused,deprecated,empty".format(reportFolder)
     out = subprocess.run(genhtmlCommand,
                          stdout=subprocess.PIPE,
                          shell=True,
