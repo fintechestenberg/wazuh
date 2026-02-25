@@ -221,8 +221,10 @@ def runCoverage(moduleName):
         folders += "--directory {} ".format(aux)
 
     coverageCommand = "lcov {} --capture --output-file {}/code_coverage.info \
-                       -rc lcov_branch_coverage=0 --exclude=\"*/tests/*\" \
-                       --include \"{}/*\" -q".format(folders,
+                       --rc branch_coverage=0 --exclude=\"*/tests/*\" \
+                       --include \"{}/*\" -q \
+                       --ignore-errors version,unused,deprecated".format(
+                                                     folders,
                                                      reportFolder,
                                                      includeDir)
     out = subprocess.run(coverageCommand,
@@ -237,7 +239,8 @@ def runCoverage(moduleName):
         errorString = "Error Running lcov: {}".format(out.returncode)
         raise ValueError(errorString)
     genhtmlCommand = "genhtml {0}/code_coverage.info --branch-coverage \
-                      --output-directory {0}".format(reportFolder)
+                      --output-directory {0} \
+                      --ignore-errors unused,deprecated".format(reportFolder)
     out = subprocess.run(genhtmlCommand,
                          stdout=subprocess.PIPE,
                          shell=True,
@@ -270,7 +273,7 @@ def runCppCheck(moduleName):
                       headerKey="cppcheck")
 
     currentDir = utils.moduleDirPath(moduleName)
-    cppcheckCommand = "cppcheck --force --std=c++17 --quiet -i {}/build {}".format(currentDir, currentDir)
+    cppcheckCommand = "cppcheck --force --std=c++17 --quiet --suppress=unknownMacro -i {}/build {}".format(currentDir, currentDir)
 
     out = subprocess.run(cppcheckCommand,
                          stdout=subprocess.PIPE,

@@ -59,7 +59,10 @@ runs:
           arguments+="--output-file build/coverage.info "
 
           # # Disable branch coverage
-          arguments+="-rc lcov_branch_coverage=0 "
+          arguments+="--rc branch_coverage=0 "
+
+          # Ignore lcov 2.x strict errors for unused include patterns and version mismatches
+          arguments+="--ignore-errors unused,deprecated "
 
           # Include test files
           include_files=""
@@ -73,7 +76,7 @@ runs:
           do
             file=$(echo $file | sed 's/\.\///g')
             if [[ ! "$file" =~ "_generated.h" ]]; then
-              include_files+="--include=$(pwd)$dir/$file "
+              include_files+="--include=$(pwd)/$file "
             fi
           done
           arguments+="$include_files"
@@ -92,7 +95,7 @@ runs:
           cd ${{ inputs.path }}/build
 
           # Generate HTML report
-          genhtml coverage.info --output-directory coverage_report
+          genhtml coverage.info --output-directory coverage_report --ignore-errors unused,deprecated
 
       # Upload the coverage report as an artifact
       - name: Uploading coverage report

@@ -22,11 +22,11 @@ runs:
           sudo apt update
 
       # Dependencies for testing:
-      # - clang-format
+      # - clang-format-14 (pinned to match formatting rules in .clang-format)
       - name: Install dependencies
         uses: awalsh128/cache-apt-pkgs-action@v1.4.3
         with:
-          packages: clang-format
+          packages: clang-format-14
           version: 1.0
 
       - name: Check Coding style
@@ -41,7 +41,7 @@ runs:
           arguments+="-i $sourceFiles "
 
           ERRORS_FILE=${{ inputs.path }}/clang_format_errors.txt
-          clang-format $arguments 2> ${ERRORS_FILE}
+          clang-format-14 $arguments 2> ${ERRORS_FILE}
 
           # Check if there are errors
           if [ -s "${ERRORS_FILE}" ]; then
