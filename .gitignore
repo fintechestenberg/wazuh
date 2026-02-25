@@ -68,8 +68,8 @@ src/wazuh-remoted
 src/wazuh-reportd
 src/wazuh-syscheckd
 src/wazuh-integratord
-src/wazuh-keystore
 src/wazuh-keystore-testtool
+src/wazuh-manager-keystore
 src/wazuh-manager-authd
 src/wazuh-manager-db
 src/wazuh-manager-modulesd
