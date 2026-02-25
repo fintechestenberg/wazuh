@@ -1076,7 +1076,7 @@ endif()
 # GoogleTest (test builds only)
 # ------------------------------------------------------------------------------
 
-if(UNIT_TEST)
+if(UNIT_TEST OR WAZUH_ENGINE_TEST)
   if(IS_WINDOWS)
     find_program(FULL_RANLIB ${CMAKE_RANLIB} REQUIRED)
     set(GTEST_CMAKE_ARGS
@@ -1153,7 +1153,7 @@ endif()
 # Google Benchmark (test builds only)
 # ------------------------------------------------------------------------------
 
-if(UNIT_TEST)
+if(UNIT_TEST OR WAZUH_ENGINE_TEST)
   if(EXISTS ${EXTERNAL_DIR}/benchmark/build/src/libbenchmark.a)
     message(STATUS "Using precompiled benchmark library")
     add_custom_target(benchmark_external)
