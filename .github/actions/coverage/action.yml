@@ -64,25 +64,15 @@ runs:
           # Ignore lcov 2.x strict errors for unused include patterns and version mismatches
           arguments+="--ignore-errors unused,deprecated "
 
-          # Include test files
-          include_files=""
+          # Include source files using glob patterns (compatible with lcov 2.x)
           if [[ ${{ inputs.path }} =~ "shared_modules/utils" ]]; then
-            paths="."
+            arguments+="--include=$(pwd)/* "
           else
-            paths="src/ include/"
+            arguments+="--include=$(pwd)/src/* --include=$(pwd)/include/* "
           fi
 
-          for file in $(find $paths -type f -regextype posix-extended -regex ".*/*\.(hpp|cpp|h|c)")
-          do
-            file=$(echo $file | sed 's/\.\///g')
-            if [[ ! "$file" =~ "_generated.h" ]]; then
-              include_files+="--include=$(pwd)/$file "
-            fi
-          done
-          arguments+="$include_files"
-
-          # Exclude scanContext.hpp
-          arguments+="--exclude=*/scanContext.hpp "
+          # Exclude generated headers and scanContext
+          arguments+="--exclude=*_generated.h --exclude=*/scanContext.hpp "
 
           echo "Executing: lcov $arguments"
           lcov $arguments

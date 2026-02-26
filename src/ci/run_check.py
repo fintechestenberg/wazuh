@@ -238,6 +238,23 @@ def runCoverage(moduleName):
         utils.printFail(msg="[lcov: FAILED]")
         errorString = "Error Running lcov: {}".format(out.returncode)
         raise ValueError(errorString)
+    # Check if coverage info file has valid records before running genhtml.
+    # Cross-compiled targets (e.g. winagent) may produce empty coverage data.
+    coverageInfoFile = "{}/code_coverage.info".format(reportFolder)
+    has_coverage_data = False
+    try:
+        with open(coverageInfoFile, 'r') as f:
+            for line in f:
+                if line.startswith("SF:"):
+                    has_coverage_data = True
+                    break
+    except FileNotFoundError:
+        pass
+
+    if not has_coverage_data:
+        utils.printGreen(msg="[genhtml: SKIPPED - no coverage data collected (cross-compiled target)]")
+        return
+
     genhtmlCommand = "genhtml {0}/code_coverage.info --branch-coverage \
                       --output-directory {0} \
                       --ignore-errors unused,deprecated,empty".format(reportFolder)
